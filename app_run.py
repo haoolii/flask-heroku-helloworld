@@ -38,11 +38,15 @@ def hello():
 
 @app.route('/api/users/', methods=['POST'])
 def add_user():
-    req_data = request.get_json()
-    user = User(username= req_data['username'], email= req_data['email'])
-    db.session.add(user)
-    db.session.commit()
-    return user_schema.dump(user)
+    try:
+        req_data = request.get_json()
+        user = User(username= req_data['username'], email= req_data['email'])
+        db.session.add(user)
+        db.session.commit()
+        return user_schema.dump(user)
+    except SQLAlchemyError as e:
+    error = str(e.__dict__['orig'])
+    return error
 
 @app.route('/api/users/')
 def users():
