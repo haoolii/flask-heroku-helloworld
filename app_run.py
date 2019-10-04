@@ -45,7 +45,7 @@ def add_user():
         db.session.commit()
         return user_schema.dump(user)
     except SQLAlchemyError as e:
-    error = str(e.__dict__['orig'])
+        error = str(e.__dict__['orig'])
     return error
 
 @app.route('/api/users/')
