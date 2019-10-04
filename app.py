@@ -1,4 +1,4 @@
-from flask import Flask, request, escape
+from flask import Flask, request, escape, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from config import app_config
@@ -44,9 +44,8 @@ def add_user():
         db.session.add(user)
         db.session.commit()
         return user_schema.dump(user)
-    except SQLAlchemyError as e:
-        error = str(e.__dict__['orig'])
-    return error
+    except Exception as error:
+        abort(400,{'message': 'error'})
 
 @app.route('/api/users/')
 def users():
